@@ -22,6 +22,7 @@ public class CrudClienteService {
             System.out.println("[1] CADASTRAR");
             System.out.println("[2] LISTAR TODOS OS CLIENTES");
             System.out.println("[3] ATUALIZAR CLIENTE POR ID");
+            System.out.println("[4] REMOVER CLIENTE POR ID");
             System.out.println("[0] MENU PRINCIPAL");
             System.out.print("Opcao: ");
             int opcao = scanner.nextInt();
@@ -34,6 +35,9 @@ public class CrudClienteService {
             break;
             case 3:
                 this.atualizar(scanner);
+            break;
+            case 4:
+                this.remover(scanner);
             break;
             default:
                 isTrue = false;
@@ -79,9 +83,18 @@ public class CrudClienteService {
             cliente.setNome(nome);
             cliente.setContato(contato);
             clienteRepository.save(cliente);
-            System.out.println("Cliente " + cliente.getId() + " , " + cliente.getNome() + " atualizado com sucesso");
+            System.out.println("Cliente ID:" + cliente.getId() + " NOME: " + cliente.getNome() + " atualizado com sucesso");
+        }else{
+            System.out.println("Cliente nao encontrado!");
         }
-        
+    }
+    //[4] REMOVER
+    public void remover(Scanner scanner){
+        System.out.println("*** Após confirmar com enter, não poderá mais ser desfeita ***");
+        System.out.print("Digite o ID que deseja REMOVER: ");
+        Long id = scanner.nextLong();
+            this.clienteRepository.deleteById(id);
+            System.out.println("Cliente removido com sucesso!");
     }
 }
 
