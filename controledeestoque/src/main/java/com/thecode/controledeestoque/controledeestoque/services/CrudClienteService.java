@@ -90,7 +90,9 @@ public class CrudClienteService {
     }
     //[4] REMOVER
     public void remover(Scanner scanner){
+        System.out.println("==============================================================");
         System.out.println("*** Após confirmar com enter, não poderá mais ser desfeita ***");
+        System.out.println("==============================================================");
         System.out.print("Digite o ID que deseja REMOVER: ");
         Long id = scanner.nextLong();
             this.clienteRepository.deleteById(id);
