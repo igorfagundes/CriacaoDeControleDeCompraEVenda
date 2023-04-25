@@ -1,4 +1,5 @@
 package com.thecode.controledeestoque.controledeestoque.services;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class CrudClienteService {
             System.out.println("Escolha uma ação");
             System.out.println("[1] CADASTRAR");
             System.out.println("[2] LISTAR TODOS OS CLIENTES");
+            System.out.println("[3] ATUALIZAR CLIENTE POR ID");
             System.out.println("[0] MENU PRINCIPAL");
             System.out.print("Opcao: ");
             int opcao = scanner.nextInt();
@@ -29,6 +31,9 @@ public class CrudClienteService {
             break;
             case 2:
                 this.listaDeClientes();
+            break;
+            case 3:
+                this.atualizar(scanner);
             break;
             default:
                 isTrue = false;
@@ -58,6 +63,25 @@ public class CrudClienteService {
             System.out.println("============");
             System.out.println(cliente);
         }
+    }
+    //[3] ATUALIZAR DADOS
+    public void atualizar(Scanner scanner){
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Digite o ID do CLIENTE a ser atualizado: ");
+        Long id = scanner.nextLong();
+        Optional<Cliente> optionalCliente = this.clienteRepository.findById(id);
+        if(optionalCliente.isPresent()){
+            System.out.print("Digite o NOVO nome: ");
+            String nome = scan.nextLine();
+            System.out.print("Digite o NOVO contato: ");
+            String contato = scan.nextLine();
+            Cliente cliente = optionalCliente.get();
+            cliente.setNome(nome);
+            cliente.setContato(contato);
+            clienteRepository.save(cliente);
+            System.out.println("Cliente " + cliente.getId() + " , " + cliente.getNome() + " atualizado com sucesso");
+        }
+        
     }
 }
 
