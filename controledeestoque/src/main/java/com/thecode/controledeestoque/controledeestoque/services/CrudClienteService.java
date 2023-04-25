@@ -19,12 +19,16 @@ public class CrudClienteService {
         while(isTrue){
             System.out.println("Escolha uma ação");
             System.out.println("[1] CADASTRAR");
+            System.out.println("[2] LISTAR TODOS OS CLIENTES");
             System.out.println("[0] MENU PRINCIPAL");
             System.out.print("Opcao: ");
             int opcao = scanner.nextInt();
         switch(opcao){
             case 1:
                 this.cadastrar(scanner);
+            break;
+            case 2:
+                this.listaDeClientes();
             break;
             default:
                 isTrue = false;
@@ -45,6 +49,15 @@ public class CrudClienteService {
         cliente.setContato(contato);
         this.clienteRepository.save(cliente);
         System.out.println("Novo Cliente criado com sucesso!");
+    }
+    //[2] MOSTRAR LISTA DE CLIENTES
+    public void listaDeClientes(){
+        Iterable<Cliente> clientes = clienteRepository.findAll();
+        for(Cliente cliente : clientes){
+            
+            System.out.println("============");
+            System.out.println(cliente);
+        }
     }
 }
 
