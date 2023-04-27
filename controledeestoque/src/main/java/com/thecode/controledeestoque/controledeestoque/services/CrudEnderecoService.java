@@ -23,8 +23,9 @@ public class CrudEnderecoService{
         while(isTrue){
             System.out.println("Escolha uma ação");
             System.out.println("[1] CADASTRAR");
-            System.out.println("[3] ATUALIZAR ENDERECO POR ID");
-            System.out.println("[4] REMOVER ENDERECO POR ID");
+            System.out.println("[2] ATUALIZAR ENDERECO POR ID");
+            System.out.println("[3] REMOVER ENDERECO POR ID");
+            System.out.println("[4] VISUALIZAR ENDERECO POR ID");
             System.out.println("[0] MENU PRINCIPAL");
             System.out.print("Opcao: ");
             int opcao = scanner.nextInt();
@@ -37,6 +38,9 @@ public class CrudEnderecoService{
             break;
             case 3:
                 this.remover(scanner);
+            break;
+            case 4:
+                this.mostrarEnderecoPorId(scanner);
             break;
             default:
                 isTrue = false;
@@ -119,4 +123,25 @@ public class CrudEnderecoService{
             this.enderecoRepository.deleteById(id);
             System.out.println("Endereco removido com sucesso!");
     }
-}
+    //[4] MOSTRAR ENDERECO POR ID
+    public void mostrarEnderecoPorId(Scanner scanner){
+        System.out.print("Digite o ID do endereco que deseja ver: ");
+            Long id = scanner.nextLong();
+
+            Optional<Endereco> optionalEnd = this.enderecoRepository.findById(id);
+            if(optionalEnd.isPresent()){
+                Endereco endereco = optionalEnd.get();
+                System.out.println("#### ENDERECO ####");
+                System.out.println("RUA: " + endereco.getRua());
+                System.out.println("NUMERO: " + endereco.getNumero());
+                System.out.println("BAIRRO: " + endereco.getBairro());
+                System.out.println("CIDADE: " + endereco.getCidade());
+                System.out.println("ESTADO: " + endereco.getEstado());
+                System.out.println("CEP: " + endereco.getCep());
+                System.out.println("##################");
+            }else{
+                System.out.println("ID de endereco inexistente");
+            }
+        }
+    }
+
