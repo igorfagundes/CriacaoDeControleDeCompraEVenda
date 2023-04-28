@@ -10,17 +10,20 @@ import com.thecode.controledeestoque.controledeestoque.orm.Estoque;
 import com.thecode.controledeestoque.controledeestoque.orm.Produtos;
 import com.thecode.controledeestoque.controledeestoque.services.CrudClienteService;
 import com.thecode.controledeestoque.controledeestoque.services.CrudEnderecoService;
+import com.thecode.controledeestoque.controledeestoque.services.CrudProdutosService;
 import com.thecode.controledeestoque.controledeestoque.orm.Financeiro;
 import java.util.Scanner;
 @SpringBootApplication
 public class ControledeestoqueApplication implements CommandLineRunner{
 	public CrudClienteService clienteService;
 	public CrudEnderecoService enderecoService;
+	public CrudProdutosService produtosService;
 
 //CONTRUTOR
-	public ControledeestoqueApplication(CrudClienteService clienteService, CrudEnderecoService enderecoService){
+	public ControledeestoqueApplication(CrudClienteService clienteService, CrudEnderecoService enderecoService, CrudProdutosService produtosService){
 		this.clienteService = clienteService;
 		this.enderecoService = enderecoService;
+		this.produtosService = produtosService;
 	}
 
 	public static void main(String[] args) {
@@ -35,6 +38,7 @@ public class ControledeestoqueApplication implements CommandLineRunner{
 			System.out.println("Escolha uma OPCAO");
 			System.out.println("[1] CLIENTE");
 			System.out.println("[2] ENDERECO");
+			System.out.println("[3] PRODUTOS");
 			System.out.println("[0] SAIR");
 			System.out.print("Opcao: ");
 			int opcao = scanner.nextInt();
@@ -45,6 +49,9 @@ public class ControledeestoqueApplication implements CommandLineRunner{
 			break;
 			case 2:
 				this.enderecoService.menu(scanner);
+			break;
+			case 3:
+				this.produtosService.menu(scanner);
 			break;
 			default:
 				isTrue = false;
