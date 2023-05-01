@@ -1,9 +1,12 @@
 package com.thecode.controledeestoque.controledeestoque.services;
 
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Scanner;
-import org.springframework.stereotype.Service;
+import java.util.Set;
+
 import com.thecode.controledeestoque.controledeestoque.Repository.ClienteRepository;
 import com.thecode.controledeestoque.controledeestoque.Repository.EnderecoRepository;
 import com.thecode.controledeestoque.controledeestoque.orm.Cliente;
@@ -13,9 +16,11 @@ import com.thecode.controledeestoque.controledeestoque.orm.Endereco;
 public class CrudEnderecoService{
 
     public EnderecoRepository enderecoRepository;
+    private ClienteRepository clienteRepository;
 
-    public CrudEnderecoService(EnderecoRepository enderecoRepository){
+    public CrudEnderecoService(EnderecoRepository enderecoRepository, ClienteRepository clienteRepository){
         this.enderecoRepository = enderecoRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     public void menu(Scanner scanner){
@@ -26,6 +31,7 @@ public class CrudEnderecoService{
             System.out.println("[2] ATUALIZAR ENDERECO POR ID");
             System.out.println("[3] REMOVER ENDERECO POR ID");
             System.out.println("[4] VISUALIZAR ENDERECO POR ID");
+            System.out.println("[5] CADASTRAR CLIENTE");
             System.out.println("[0] MENU PRINCIPAL");
             System.out.print("Opcao: ");
             int opcao = scanner.nextInt();
@@ -42,6 +48,9 @@ public class CrudEnderecoService{
             case 4:
                 this.mostrarEnderecoPorId(scanner);
             break;
+            case 5:
+                this.addEnd(scanner);
+            break;
             default:
                 isTrue = false;
             break;
@@ -50,7 +59,7 @@ public class CrudEnderecoService{
         }
     }
     //[1] CADASTRAR
-    public void cadastrar(Scanner scanner){
+    public  void cadastrar(Scanner scanner){
         Scanner scan = new Scanner(System.in);
         System.out.print("Digite a RUA: ");
         String rua = scan.nextLine();
@@ -106,8 +115,9 @@ public class CrudEnderecoService{
             endereco.setCidade(cidade);
             endereco.setEstado(estado);
             endereco.setCep(cep);
-            this.enderecoRepository.save(endereco);
 
+            this.enderecoRepository.save(endereco);
+            
             System.out.println("Endereco: " + endereco.getId() + " atualizado com sucesso");
         }else{
             System.out.println("Endereco nao encontrado!");
@@ -142,6 +152,28 @@ public class CrudEnderecoService{
             }else{
                 System.out.println("ID de endereco inexistente");
             }
+        }
+        public Set<Cliente> addEnd(Scanner scan){
+            Boolean isTrue = true;
+            Set<Cliente> clientes = new HashSet<>();
+            while(isTrue){
+                System.out.println("ID do CLIENTE a ser adicionado o ENDERECO (digite 0 para sair): ");
+                Long clienteId = scan.nextLong();
+                this.cadastrar(scan);
+                
+                if(clienteId > 0){
+                    System.out.println("Cliente ID: " + clienteId);
+                    Optional<Cliente> opCliente = this.clienteRepository.findById(clienteId);
+                    if(opCliente.isPresent()){
+                        clientes.add(opCliente.get());
+                    }else{
+                        System.out.println("Nenhum CLIENTE possui Id " + clienteId + " !");
+                    }
+                }else{
+                    isTrue = false;
+                }
+            }
+            return clientes;
         }
     }
 

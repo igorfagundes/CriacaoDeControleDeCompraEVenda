@@ -1,20 +1,29 @@
 package com.thecode.controledeestoque.controledeestoque.services;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import com.thecode.controledeestoque.controledeestoque.Repository.ClienteRepository;
+import com.thecode.controledeestoque.controledeestoque.Repository.EnderecoRepository;
 import com.thecode.controledeestoque.controledeestoque.orm.Cliente;
+import com.thecode.controledeestoque.controledeestoque.orm.Endereco;
+
+import jakarta.transaction.Transactional;
+
 
 @Service
 public class CrudClienteService {
     public ClienteRepository clienteRepository;
+    private EnderecoRepository enderecoRepository;
 
 
-    public CrudClienteService(ClienteRepository clienteRepository){
+    public CrudClienteService(ClienteRepository clienteRepository, EnderecoRepository enderecoRepository){
         this.clienteRepository = clienteRepository;
+        this.enderecoRepository = enderecoRepository;
     }
-
+    @Transactional
     public void menu(Scanner scanner){
         Boolean isTrue = true;
         while(isTrue){
@@ -58,6 +67,8 @@ public class CrudClienteService {
         System.out.print("Digite o TELEFONE de contato: ");
         String contato = scan.nextLine();
         Cliente cliente = new Cliente();
+        
+        
         cliente.setNome(nome);
         cliente.setContato(contato);
         this.clienteRepository.save(cliente);
@@ -83,7 +94,9 @@ public class CrudClienteService {
             String nome = scan.nextLine();
             System.out.print("Digite o NOVO contato: ");
             String contato = scan.nextLine();
+
             Cliente cliente = optionalCliente.get();
+
             cliente.setNome(nome);
             cliente.setContato(contato);
             clienteRepository.save(cliente);
@@ -103,6 +116,7 @@ public class CrudClienteService {
             System.out.println("Cliente removido com sucesso!");
     }
     //[5] BUSCAR UM CLIENTE
+    @Transactional
     public void buscarUmCliente(Scanner scanner){
         System.out.println("Digite o ID desejado");
         Long id = scanner.nextLong();
@@ -116,9 +130,10 @@ public class CrudClienteService {
             System.out.println("Cliente NOME: " + cliente.getNome());
             System.out.println("Cliente CONTATO: " + cliente.getContato());
             System.out.println("###################");
+        
         }else{
             System.out.println("Cliente ID invalido!");
+            }
         }
-    }
 }
 

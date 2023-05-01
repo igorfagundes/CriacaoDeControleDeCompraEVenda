@@ -1,9 +1,16 @@
 package com.thecode.controledeestoque.controledeestoque.orm;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,12 +26,16 @@ public class Endereco {
     public String estado;
     public Integer cep;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "clientes_id")
+    public Set<Cliente> cliente;
+
     @Deprecated
     public Endereco(){
 
     }
 
-    public Endereco(Long id, String rua, Integer numero, String bairro, String cidade, String estado, Integer cep) {
+    public Endereco(Long id, String rua, Integer numero, String bairro, String cidade, String estado, Integer cep, Cliente cliente) {
         this.id = id;
         this.rua = rua;
         this.numero = numero;
@@ -32,6 +43,7 @@ public class Endereco {
         this.cidade = cidade;
         this.estado = estado;
         this.cep = cep;
+        
     }
 
 
@@ -87,12 +99,22 @@ public class Endereco {
     public void setCep(Integer cep) {
         this.cep = cep;
     }
+    
+    public Set<Cliente> getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Set<Cliente> cliente) {
+        this.cliente = cliente;
+    }
 
     @Override
     public String toString() {
         return "Endereco [id=" + id + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade="
-                + cidade + ", estado=" + estado + ", cep=" + cep + "]";
+                + cidade + ", estado=" + estado + ", cep=" + cep + ", cliente=" + cliente + "]";
     }
+
+    
 
     
     
